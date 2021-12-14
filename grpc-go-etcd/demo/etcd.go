@@ -5,7 +5,7 @@ import (
 	"log"
 	"time"
 
-	"go.etcd.io/etcd/api/mvccpb"
+	"go.etcd.io/etcd/api/v3/mvccpb"
 	clientv3 "go.etcd.io/etcd/client/v3"
 )
 
