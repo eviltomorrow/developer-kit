@@ -29,10 +29,10 @@ var DefaultHeader = map[string]string{
 	"Connection":                "keep-alive",
 	"Cache-Control":             "max-age=0",
 	"Upgrade-Insecure-Requests": "1",
-	"User-Agent":                "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36",
+	"User-Agent":                "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36",
 	"Accept":                    "application/json,text/html,application/xml",
 	"Accept-Encoding":           "gzip, deflate",
-	"Accept-Language":           "zh-CN,zh;q=0.9,en;q=0.8",
+	"Accept-Language":           "zh-CN,zh;q=0.9,en;q=0.8,da;q=0.7,pt;q=0.6,ja;q=0.5",
 }
 
 // CreateClientHTTP create http client
