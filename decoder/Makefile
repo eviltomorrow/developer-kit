@@ -1,2 +1,2 @@
 build:
-	go build -o decoder -ldflags "-s -w" decoder.go
+	go build -o decoder -ldflags "-s -w" main.go

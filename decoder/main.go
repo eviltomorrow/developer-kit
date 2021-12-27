@@ -18,7 +18,6 @@ func main() {
 
 var (
 	version = "1.0"
-	path    string
 
 	UTF8     = false
 	GB18030  = false
@@ -38,7 +37,10 @@ var (
 		Short: "Read file with specify path",
 		Long:  ``,
 		Run: func(cmd *cobra.Command, args []string) {
-			file, err := os.OpenFile(path, os.O_RDONLY, 0644)
+			if len(args) != 1 {
+				log.Fatalf("Invalid args, nest error: %v\r\n", args)
+			}
+			file, err := os.OpenFile(args[0], os.O_RDONLY, 0644)
 			if err != nil {
 				log.Printf("[Fatal] Open file failure, nest error: %v\r\n", err)
 				os.Exit(-1)
@@ -92,8 +94,6 @@ func init() {
 
 	rootCmd.AddCommand(versionCmd)
 
-	readCmd.Flags().StringVarP(&path, "path", "", "", "path of file")
-	readCmd.MarkFlagRequired("path")
 	readCmd.Flags().BoolVarP(&GBK, "gbk", "", false, "gbk mode")
 	readCmd.Flags().BoolVarP(&UTF8, "utf8", "", false, "utf-8 mode")
 	readCmd.Flags().BoolVarP(&GB18030, "gb18030", "", false, "gb18030 mode")
