@@ -20,11 +20,12 @@ import (
 
 // HelloService hello
 type HelloService struct {
+	pb.UnimplementedGreeterServer
 }
 
 // SayHello hello
-func (hs *HelloService) SayHello(ctx context.Context, request *pb.HelloRequest) (*pb.HelloReply, error) {
-	return &pb.HelloReply{Message: fmt.Sprintf("Hello: %d, %s", *port, request.Name)}, nil
+func (hs *HelloService) SayHello(ctx context.Context, req *pb.HelloRequest) (*pb.HelloReply, error) {
+	return &pb.HelloReply{Message: fmt.Sprintf("Hello: %d, %s", *port, req.Name)}, nil
 }
 
 var port = flag.Int("port", 8080, "Server port")
@@ -38,6 +39,46 @@ func main() {
 	}
 	grpc.EnableTracing = true
 
+	// var rootDir = "/home/shepard/data/certs"
+	// var (
+	// 	caCertPath     = filepath.Join(rootDir, "ca.crt")
+	// 	serverCertPath = filepath.Join(rootDir, "server.crt")
+	// 	serverKeyPath  = filepath.Join(rootDir, "server.pem")
+	// )
+
+	// cert, err := tls.LoadX509KeyPair(serverCertPath, serverKeyPath)
+	// if err != nil {
+	// 	log.Fatalf("LoadX509KeyPair failure, nest error: %v", err)
+	// }
+
+	// certPool := x509.NewCertPool()
+	// ca, err := ioutil.ReadFile(caCertPath)
+	// if err != nil {
+	// 	log.Fatalf("Read ca pem file failure, nest error: %v", err)
+	// }
+
+	// if ok := certPool.AppendCertsFromPEM(ca); !ok {
+	// 	log.Fatalf("AppendCertsFromPEM failure")
+	// }
+
+	// creds := credentials.NewTLS(&tls.Config{
+	// 	Certificates: []tls.Certificate{cert},
+	// 	ClientAuth:   tls.RequireAndVerifyClientCert,
+	// 	ClientCAs:    certPool,
+	// 	CipherSuites: []uint16{
+	// 		// tls.TLS_RSA_WITH_AES_128_CBC_SHA,
+	// 		// tls.TLS_RSA_WITH_AES_256_CBC_SHA,
+	// 		tls.TLS_RSA_WITH_AES_128_CBC_SHA256,
+	// 		tls.TLS_RSA_WITH_AES_128_GCM_SHA256,
+	// 		tls.TLS_RSA_WITH_AES_256_GCM_SHA384,
+	// 		tls.TLS_AES_128_GCM_SHA256,
+	// 		tls.TLS_AES_256_GCM_SHA384,
+	// 		tls.TLS_CHACHA20_POLY1305_SHA256,
+	// 	},
+	// 	PreferServerCipherSuites: true,
+	// })
+
+	// s := grpc.NewServer(grpc.Creds(creds))
 	s := grpc.NewServer()
 	defer s.Stop()
 	defer s.GracefulStop()
@@ -153,7 +194,7 @@ func register(service string, host string, port int, ttl int64) (func(), error) 
 		goto keep
 	}()
 	close := func() {
-		_, _ = client.Revoke(ctx, *leaseID)
+		_, _ = client.Revoke(context.Background(), *leaseID)
 	}
 
 	return close, nil
