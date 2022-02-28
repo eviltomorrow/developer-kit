@@ -9,14 +9,17 @@ import (
 
 func TestJob(t *testing.T) {
 	go func() {
-		for metrics := range Manager.Metrics() {
-			t.Logf("%s", metrics)
+		for {
+			t.Logf("data: %v\r\n", Manager.State())
+			time.Sleep(1 * time.Second)
 		}
-		time.Sleep(5 * time.Second)
 	}()
 	Manager.Add(NewJob("1", 2*time.Second, func() {
 		fmt.Println("Hello world", time.Now().Format("15:04:05"))
+		// time.Sleep(2 * time.Second)
 	}))
 
-	select {}
+	time.Sleep(50 * time.Second)
+	Manager.Del("1")
+	time.Sleep(2 * time.Second)
 }

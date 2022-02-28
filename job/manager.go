@@ -17,7 +17,7 @@ func (m *manager) Add(job *Job) {
 	if ok {
 		return
 	}
-	prepared.(*Job).startup()
+	go prepared.(*Job).startup()
 }
 
 func (m *manager) Del(id string) {
@@ -27,13 +27,11 @@ func (m *manager) Del(id string) {
 	}
 }
 
-func (m *manager) Metrics() chan string {
-	var metrics = make(chan string, 16)
-
+func (m *manager) State() []string {
+	var data = make([]string, 0, 64)
 	m.jobs.Range(func(key, value interface{}) bool {
-		metrics <- value.(*Job).metrics()
-		return false
+		data = append(data, value.(*Job).state())
+		return true
 	})
-	close(metrics)
-	return metrics
+	return data
 }
