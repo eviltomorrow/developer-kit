@@ -206,7 +206,7 @@ func (tw *TimeWheel) addTask(task *Task, byInterval bool) {
 	task.circle = circle
 	task.pos = pos
 
-	element := tw.slots[pos].PushBack(task)
+	element := tw.slots[pos].PushFront(task)
 	tw.taskRecords.Store(task.key, element)
 }
 
