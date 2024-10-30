@@ -1,10 +1,9 @@
 package job
 
 import (
+	"fmt"
 	"testing"
 	"time"
-
-	"golang.org/x/exp/errors/fmt"
 )
 
 func TestJob(t *testing.T) {
